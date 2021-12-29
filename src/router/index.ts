@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
+import { createRouter, createWebHashHistory, RouteRecordRaw, RouteLocationNormalized } from 'vue-router'
 import Home from '../views/Home.vue'
 
 const routes: Array<RouteRecordRaw> = [
@@ -18,13 +18,19 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/sheet/:action',
     name: 'Sheet',
-    component: () => import('../views/Sheet.vue')
+    component: () => import('../views/Sheet.vue'),
+    beforeEnter: [isValidParamsOfSheet],
   },
   {
     path: '/sheet',
     redirect: '/sheet/input',
   },
 ]
+
+function isValidParamsOfSheet(to:RouteLocationNormalized){
+  const action:string = Array.isArray(to.params.action) ? to.params.action[0] : to.params.action;
+  return ['input', 'edit', 'confirm', 'complete', 'show'].includes(action) ? true : {path: '/sheet'};
+}
 
 const router = createRouter({
   history: createWebHashHistory(),
