@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType, computed } from "vue";
-import {FormData, SheetState} from "@/types";
+import {FormData} from "@/types";
 
 export default defineComponent({
   name: "FormInput",

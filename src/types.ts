@@ -1,17 +1,23 @@
-export {RootState, SheetState, FormData, FormParts};
+export {RootState, SheetState, FormValues, FormData, FormParts};
 
 interface RootState {
   version: string;
 }
 
 interface SheetState {
-  values: {[propName: string]:string | string[] | number | number[] };
+  values: FormValues
 }
+
+interface FormValues {
+  [propName: string]: FormValue
+}
+
+type FormValue = string|number|Array<string>|Array<number>;
 
 interface FormData {
   name: string
   component:string
-  default_value?: string|number|string[]|number[]
+  default_value?: FormValue
   list?: Array<{
     label: string
     value: string|number

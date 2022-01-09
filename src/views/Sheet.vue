@@ -24,6 +24,8 @@ export default defineComponent({
     const router = useRouter();
     const route = useRoute();
     const store = useStore();
+
+    store.commit('sheet/setValues',{aa:'hoge',bb:['aa']});
     
     const action = ref<string>(
       Array.isArray(route.params.action)
