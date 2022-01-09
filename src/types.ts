@@ -1,4 +1,4 @@
-export {RootState, SheetState, FormValues, FormData, FormParts};
+export {RootState, SheetState, FormValue, FormValues, FormData, FormParts};
 
 interface RootState {
   version: string;
@@ -12,7 +12,7 @@ interface FormValues {
   [propName: string]: FormValue
 }
 
-type FormValue = string|number|Array<string>|Array<number>;
+type FormValue = string|number|Array<string|number>;
 
 interface FormData {
   name: string

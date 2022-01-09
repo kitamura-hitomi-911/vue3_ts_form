@@ -20,37 +20,20 @@ const actions = {
 const mutations = {
   setValues (state:SheetState, values:FormValues):void {
     for(const key in values){
-      // if (typeof state.values[key] === "string[]" || typeof state.values[key] === "number[]") {
-      console.log(state.values[key],key);
       if(Array.isArray(values[key])){
-        console.log('配列ルート',key);
         if(state.values[key] === void 0){
           console.log('are');
           state.values[key] = [];
         }
-
-        console.log(typeof state.values[key])
         if(Array.isArray(state.values[key])){
-        // if(typeof state.values[key] !== 'number' && typeof state.values[key] !== 'string'){
-        // if('splice' in state.values[key]){
-          console.log(Array.isArray(state.values[key]));
           (<string[]|number[]>state.values[key]).splice(0);
-          // state.values[key].push('hoge');
-           
-
           (<string[]|number[]>values[key]).forEach( (val:string|number):void => {
-            console.log(val);
-            if (typeof val === "number") {
-              (<number[]>state.values[key]).push(val);
-            }else{
-              (<string[]>state.values[key]).push(val);
-            }
-            // state.values[key].push(val);
+            (<Array<string|number>>state.values[key]).push(val);
           })
+        }else{
+          console.error('values がプリミティブなのに、セットしようと思っている値が配列')
         }
-    
-        
-        console.log('セット後', state.values[key]);
+
       }else{
 
         state.values[key] = values[key];

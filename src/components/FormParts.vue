@@ -3,7 +3,7 @@
     <dl>
       <dt>{{form_parts.ttl_label}}</dt>
       <dd>
-        <FormInput v-for="form_data in form_parts.form_data_list" :form_data="form_data" :key="form_data.name" :values="values" :mode="mode"></FormInput>
+        <component v-for="form_data in form_parts.form_data_list" :is="form_data.component" :form_data="form_data" :key="form_data.name" :values="values" :mode="mode"></component>
       </dd>
     </dl>
   </div>
@@ -12,6 +12,7 @@
 <script lang="ts">
 import { defineComponent, PropType, ref } from "vue";
 import FormInput from "@/components/FormInput.vue";
+import FormCheckbox from "@/components/FormCheckbox.vue";
 import {FormParts, SheetState} from "@/types";
 
 
@@ -19,6 +20,7 @@ export default defineComponent({
   name: "FormParts",
   components: {
     FormInput,
+    FormCheckbox
   },
   props:{
       mode:{

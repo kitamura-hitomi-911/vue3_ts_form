@@ -1,12 +1,13 @@
 <template>
   <div class="form_input">
-    <input type="text" :value="value" :name="form_data.name">
+    <input type="text" :name="form_data.name" v-model="value">
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType, computed } from "vue";
-import {FormData} from "@/types";
+import { useStore } from 'vuex'
+import { FormData, FormValues, FormValue } from "@/types";
 
 export default defineComponent({
   name: "FormInput",
@@ -25,10 +26,20 @@ export default defineComponent({
     }
   },
   setup(props){
-    const value = computed(() => {
-      return props.values[props.form_data.name] || '';
+    const store = useStore();
+
+    const value = computed({
+      get: ():string|number => props.values[props.form_data.name] || '',
+      set: (value:FormValue):void => {
+        setValues({[props.form_data.name]:value})
+      }
     });
-    return {value};
+
+    const setValues = (param_obj:FormValues):void => {
+      store.commit('sheet/setValues',param_obj);
+    }
+
+    return {value, setValues};
   }
 });
 

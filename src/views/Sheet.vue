@@ -1,15 +1,17 @@
 <template>
   <div class="sheet">
     <h1>Sheet{{ action }}</h1>
-    <FormParts :form_parts="form_parts" :mode="mode" :values="values"></FormParts>
+    <FormParts v-for="form_parts in form_parts_list" :key="form_parts.id" :form_parts="form_parts" :mode="mode" :values="values"></FormParts>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, watch } from "vue";
+import { defineComponent, ref, computed,  watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from 'vuex'
+import { FormValues, FormData } from "@/types"
 import FormParts from "@/components/FormParts.vue";
+import form_parts_list from "@/const/sheet_form_parts_list"
 
 interface ModeSettings {
   [key: string]: string;
@@ -24,8 +26,6 @@ export default defineComponent({
     const router = useRouter();
     const route = useRoute();
     const store = useStore();
-
-    store.commit('sheet/setValues',{aa:'hoge',bb:['aa']});
     
     const action = ref<string>(
       Array.isArray(route.params.action)
@@ -46,29 +46,24 @@ export default defineComponent({
     });
     const values = computed(() => store.state.sheet.values);
 
-    const form_parts = {
-      id:'aa',
-      ttl_label:'見出し文字列',
-      form_data_list:[
-        {
-          name:'user_name',
-          component:'FormInput',
-          list:[
-            {
-              label:'選択してください',
-              value:''
-            }
-          ]
-        }
-      ]
+    const setValues = (param_obj:FormValues):void => {
+      store.commit('sheet/setValues',param_obj);
     }
+
+    setValues(form_parts_list.reduce((ret:FormValues, form_parts)=>{
+      form_parts.form_data_list.forEach( (form_data:FormData):void => {
+        ret[form_data.name] = form_data.list === void 0 ? '' : [];
+      });
+      return ret;
+    }, {}));
+
     watch(
       () => route.params.action,
       () => {
         router.go(0);
       }
     );
-    return { action, mode, values, form_parts };
+    return { action, mode, values, form_parts_list, setValues };
   },
 });
 </script>
