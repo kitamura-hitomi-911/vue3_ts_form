@@ -1,4 +1,4 @@
-export {RootState, SheetState, FormValue, FormValues, FormData, FormParts};
+export {RootState, SheetState, FormValue, FormValues, FormData, FormParts, ActionToMode};
 
 interface RootState {
   version: string;
@@ -33,3 +33,9 @@ interface FormParts {
   form_data_list: FormData[]
 }
 
+interface ActionToMode {
+  input: "edit"
+  confirm: "view_with_input_hidden"
+  complete: "view"
+  detail: "view"
+}
