@@ -12,7 +12,11 @@ interface FormValues {
   [propName: string]: FormValue
 }
 
-type FormValue = string|number|Array<string|number>;
+type FormValueCommon = string | number;
+type FormValueCheckbox = (string|number)[] | boolean;
+
+type FormValue = FormValueCommon | FormValueCheckbox;
+
 
 interface FormData {
   name: string

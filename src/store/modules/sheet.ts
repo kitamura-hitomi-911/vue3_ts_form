@@ -4,7 +4,9 @@ import { SheetState, RootState, FormValues } from '@/types';
 const state = ():SheetState => ({
   values: {
     user_name:'hoge hoge',
-    needs:[1,2]
+    needs:[1,2],
+    radio_desu:'',
+    select_dayo:''
   }
 })
 const getters = {}
@@ -19,10 +21,10 @@ const actions = {
 // mutations
 const mutations = {
   setValues (state:SheetState, values:FormValues):void {
+    console.log(values);
     for(const key in values){
       if(Array.isArray(values[key])){
         if(state.values[key] === void 0){
-          console.log('are');
           state.values[key] = [];
         }
         if(Array.isArray(state.values[key])){
@@ -31,11 +33,9 @@ const mutations = {
             (<Array<string|number>>state.values[key]).push(val);
           })
         }else{
-          console.error('values がプリミティブなのに、セットしようと思っている値が配列')
+          console.error('values がプリミティブなのに、セットしようと思っている値が配列',key)
         }
-
       }else{
-
         state.values[key] = values[key];
       }
     

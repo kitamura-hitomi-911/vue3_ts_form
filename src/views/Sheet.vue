@@ -45,7 +45,7 @@ export default defineComponent({
 
     setValues(form_parts_list.reduce((ret:FormValues, form_parts)=>{
       form_parts.form_data_list.forEach( (form_data:FormData):void => {
-        ret[form_data.name] = form_data.list === void 0 ? '' : [];
+        ret[form_data.name] = form_data.component === 'FormCheckbox' ? [] : '';
       });
       return ret;
     }, {}));

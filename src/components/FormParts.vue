@@ -13,6 +13,9 @@
 import { defineComponent, PropType, ref } from "vue";
 import FormInput from "@/components/FormInput.vue";
 import FormCheckbox from "@/components/FormCheckbox.vue";
+import FormRadio from "@/components/FormRadio.vue";
+import FormTextarea from "@/components/FormTextarea.vue";
+import FormSelect from "@/components/FormSelect.vue";
 import {FormParts, SheetState} from "@/types";
 
 
@@ -20,7 +23,10 @@ export default defineComponent({
   name: "FormParts",
   components: {
     FormInput,
-    FormCheckbox
+    FormCheckbox,
+    FormRadio,
+    FormSelect,
+    FormTextarea
   },
   props:{
       mode:{
