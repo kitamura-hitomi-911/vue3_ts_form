@@ -1,27 +1,27 @@
 <template>
   <div class="sheet">
     <h1>Sheet{{ mode }}</h1>
-    <FormParts v-for="form_parts in form_parts_list" :key="form_parts.id" :form_parts="form_parts" :mode="mode" :values="values"></FormParts>
+    <FormMain :form_parts_list="form_parts_list" :store_name="store_name" :mode="mode"></FormMain>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, computed,  watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { useStore } from 'vuex'
-import { FormValues, FormData, ActionToMode } from "@/types"
-import FormParts from "@/components/FormParts.vue";
+
+import { ActionToMode } from "@/types"
+import FormMain from "@/components/FormMain.vue";
 import form_parts_list from "@/const/sheet_form_parts_list"
 
 export default defineComponent({
   name: "Sheet",
   components: {
-    FormParts,
+    FormMain,
   },
   setup() {
     const router = useRouter();
     const route = useRoute();
-    const store = useStore();
+
     const actionToMode:ActionToMode = {
       input : "edit",
       confirm : "view_with_input_hidden",
@@ -37,18 +37,7 @@ export default defineComponent({
     const mode = computed(() => {
       return actionToMode[action];
     });
-    const values = computed(() => store.state.sheet.values);
-
-    const setValues = (param_obj:FormValues):void => {
-      store.commit('sheet/setValues',param_obj);
-    }
-
-    setValues(form_parts_list.reduce((ret:FormValues, form_parts)=>{
-      form_parts.form_data_list.forEach( (form_data:FormData):void => {
-        ret[form_data.name] = form_data.component === 'FormCheckbox' ? [] : '';
-      });
-      return ret;
-    }, {}));
+    const store_name = 'sheet';
 
     watch(
       () => route.params.action,
@@ -56,7 +45,7 @@ export default defineComponent({
         router.go(0);
       }
     );
-    return { mode, values, form_parts_list, setValues };
+    return { mode, store_name, form_parts_list };
   },
 });
 </script>

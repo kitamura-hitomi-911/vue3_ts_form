@@ -1,22 +1,22 @@
 export {RootState, SheetState, FormValue, FormValues, FormData, FormParts, ActionToMode};
 
+type FormValueCommon = string | number | undefined; //キー名を設定だけした段階は undefined となるので？
+type FormValueCheckbox = (string|number)[] | boolean;
+
+type FormValue = FormValueCommon | FormValueCheckbox;
+
 interface RootState {
   version: string;
-}
-
-interface SheetState {
-  values: FormValues
 }
 
 interface FormValues {
   [propName: string]: FormValue
 }
 
-type FormValueCommon = string | number;
-type FormValueCheckbox = (string|number)[] | boolean;
-
-type FormValue = FormValueCommon | FormValueCheckbox;
-
+interface SheetState {
+  values: FormValues,
+  tmp_values:FormValues,
+}
 
 interface FormData {
   name: string

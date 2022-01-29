@@ -6,8 +6,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType, computed } from "vue";
-import { useStore } from 'vuex'
-import { FormData, FormValues, FormValue } from "@/types";
+import { FormData, FormValue } from "@/types";
 
 export default defineComponent({
   name: "FormTextarea",
@@ -23,23 +22,16 @@ export default defineComponent({
     mode:{
       type: String,
       required:true
-    }
+    },
   },
-  setup(props){
-    const store = useStore();
-
+  setup(props, context){
     const value = computed({
       get: ():string|number => props.values[props.form_data.name] || '',
       set: (value:FormValue):void => {
-        setValues({[props.form_data.name]:value})
+        context.emit('updateVal',{[props.form_data.name]:value});
       }
     });
-
-    const setValues = (param_obj:FormValues):void => {
-      store.commit('sheet/setValues',param_obj);
-    }
-
-    return {value, setValues};
+    return {value};
   }
 });
 

@@ -26,15 +26,15 @@ export default defineComponent({
     mode:{
       type: String,
       required:true
-    }
+    },
   },
-  setup(props){
+  setup(props, context){
     const store = useStore();
 
     const value = computed({
       get: ():Array<string|number> => Array.isArray(props.values[props.form_data.name]) ? props.values[props.form_data.name] : [],
       set: (value:FormValue):void => {
-        setValues({[props.form_data.name]:value})
+        context.emit('updateVal',{[props.form_data.name]:value});
       }
     });
     
