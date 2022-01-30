@@ -5,7 +5,8 @@ const form_parts_list = [
     form_data_list:[
       {
         name:'user_name',
-        component:'FormInput'
+        component:'FormInput',
+        required:true
       }
     ]
   },
@@ -16,6 +17,7 @@ const form_parts_list = [
       {
         name:'needs',
         component:'FormCheckbox',
+        required:true,
         list:[
           {
             label:'希望1',

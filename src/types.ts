@@ -1,20 +1,25 @@
-export {RootState, SheetState, FormValue, FormValues, FormData, FormParts, ActionToMode, Btn};
+export {RootState, SheetState, FormValue, FormValues, Errors, FormData, FormParts, ActionToMode, FormMode, Btn};
 
 interface RootState {
   version: string;
 }
 
-type FormValueCommon = string | number | undefined; //キー名を設定だけした段階は undefined となるので？
+type FormValueCommon = string | number; //キー名を設定だけした段階は undefined となるので？
 type FormValueCheckbox = (string|number)[] | boolean;
 type FormValue = FormValueCommon | FormValueCheckbox;
 
 interface FormValues {
   [propName: string]: FormValue
 }
+interface Errors {
+  [propName: string]: string[]
+}
 
 interface SheetState {
   values: FormValues,
-  tmp_values:FormValues,
+  tmp_values: FormValues,
+  form_parts_list: FormParts[],
+  errors: Errors
 }
 
 interface FormData {
@@ -26,7 +31,8 @@ interface FormData {
     value: string|number
     disable?: boolean
   }>
-  disable?: boolean
+  disabled?: boolean,
+  required?: boolean
 }
 
 interface FormParts {
@@ -36,11 +42,13 @@ interface FormParts {
   form_data_list: FormData[]
 }
 
+type FormMode = "edit" | "view_with_input_hidden" | "view";
+
 interface ActionToMode {
-  input: "edit"
-  confirm: "view_with_input_hidden"
-  complete: "view"
-  detail: "view"
+  input: FormMode
+  confirm: FormMode
+  complete: FormMode
+  detail: FormMode
 }
 
 interface Btn {

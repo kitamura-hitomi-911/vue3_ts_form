@@ -1,7 +1,7 @@
 <template>
   <div class="sheet">
     <h1>Sheet{{ mode }}</h1>
-    <FormMain :form_parts_list="form_parts_list" :btn_list="btn_list" :store_name="store_name" :mode="mode"></FormMain>
+    <FormMain :btn_list="btn_list" :store_name="store_name" :mode="mode"></FormMain>
   </div>
 </template>
 
@@ -11,7 +11,6 @@ import { useRoute, useRouter } from "vue-router";
 
 import { ActionToMode, Btn } from "@/types"
 import FormMain from "@/components/FormMain.vue";
-import form_parts_list from "@/const/sheet_form_parts_list"
 
 export default defineComponent({
   name: "Sheet",
@@ -53,7 +52,7 @@ export default defineComponent({
         router.go(0);
       }
     );
-    return { mode, store_name, form_parts_list, btn_list };
+    return { mode, store_name, btn_list };
   },
 });
 </script>
