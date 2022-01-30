@@ -1,8 +1,8 @@
 <template>
   <div class="form">
     <FormParts v-for="form_parts in form_parts_list" :key="form_parts.id" :form_parts="form_parts" :mode="mode" :values="values" @updateVal="updateVal"></FormParts>
-    <div class="form-btn_area">
-
+    <div class="form-btn_area" v-if="btn_list.length">
+      <Btn v-for="btn in btn_list" :btn="btn" :key="btn.label"></Btn>
     </div>
   </div>
 
@@ -10,15 +10,20 @@
 
 <script lang="ts">
 import FormParts from '@/components/FormParts.vue';
+import Btn from '@/components/Btn.vue';
 import { useStore } from 'vuex'
 import { defineComponent, computed, PropType} from "vue";
-import {FormData, FormValues, FormParts as TypeFormParts} from "@/types";
+import {FormData, FormValues, FormParts as TypeFormParts, Btn as TypeBtn} from "@/types";
 
 export default defineComponent({
   name: 'FormMain',
   props:{
     form_parts_list:{
       type: Array as PropType<TypeFormParts[]>,
+      required:true
+    },
+    btn_list:{
+      type: Array as PropType<TypeBtn[]>,
       required:true
     },
     mode:{
@@ -32,6 +37,7 @@ export default defineComponent({
   },
   components: {
     FormParts,
+    Btn
   },
   setup(props){
     const store = useStore();

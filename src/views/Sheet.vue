@@ -1,7 +1,7 @@
 <template>
   <div class="sheet">
     <h1>Sheet{{ mode }}</h1>
-    <FormMain :form_parts_list="form_parts_list" :store_name="store_name" :mode="mode"></FormMain>
+    <FormMain :form_parts_list="form_parts_list" :btn_list="btn_list" :store_name="store_name" :mode="mode"></FormMain>
   </div>
 </template>
 
@@ -9,7 +9,7 @@
 import { defineComponent, computed,  watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
-import { ActionToMode } from "@/types"
+import { ActionToMode, Btn } from "@/types"
 import FormMain from "@/components/FormMain.vue";
 import form_parts_list from "@/const/sheet_form_parts_list"
 
@@ -34,6 +34,14 @@ export default defineComponent({
     }
     const action:keyof ActionToMode = isKeyOfActionToMode(_action, actionToMode) ? _action : 'input';
 
+    const btn_list:Btn[] = [
+      {
+        label:'確認',
+        classes:['next'],
+        action:'toConfirm'
+      }
+    ];
+
     const mode = computed(() => {
       return actionToMode[action];
     });
@@ -45,7 +53,7 @@ export default defineComponent({
         router.go(0);
       }
     );
-    return { mode, store_name, form_parts_list };
+    return { mode, store_name, form_parts_list, btn_list };
   },
 });
 </script>
