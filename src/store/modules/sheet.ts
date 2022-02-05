@@ -2,14 +2,25 @@ import { Module, Commit } from 'vuex';
 import {SheetState, RootState, FormValues, FormData, FormParts, Errors} from '@/types';
 import form_parts_list from "@/const/sheet_form_parts_list"
 import isArray from "@/lib/isArray"
+import getInitValuesFromFormParts from "@/store/getInitValuesFromFormParts"
+
+const values: FormValues = getInitValuesFromFormParts(form_parts_list);
+const tmp_values: FormValues = getInitValuesFromFormParts(form_parts_list);
+
 
 const state = ():SheetState => ({
-  values: {},
-  tmp_values: {},
+  values,
+  tmp_values,
   form_parts_list,
   errors: {}
 })
-const getters = {}
+const getters = {
+  hasError(state: SheetState): boolean{
+    return Object.keys(state.errors).reduce( (ret:boolean, error_name:string):boolean => {
+      return !!state.errors[error_name].length || ret;
+    }, false)
+  }
+}
 
 // actions
 const actions = {
@@ -61,21 +72,23 @@ const mutations = {
   setValues(state: SheetState, payload:{values: FormValues, state_key:'values'|'tmp_values'}): void {
     const {values, state_key} = payload;
     for (const param_name in values) {
-      if (Array.isArray(values[param_name])) {
+      const _to_be_setted_values_of_param_name = values[param_name];
+      if (isArray(_to_be_setted_values_of_param_name)) {
         // 渡された値が配列で、そのparam_name が未定義だった場合はいれものを用意
         if (state[state_key][param_name] === void 0) {
           state[state_key][param_name] = [];
         }
-        if (Array.isArray(state[state_key][param_name])) {
-          (<string[] | number[]>state[state_key][param_name]).splice(0);
-          (<string[] | number[]>values[param_name]).forEach((val: string | number): void => {
-            (<Array<string | number>>state[state_key][param_name]).push(val);
+        const _values_of_param_name = state[state_key][param_name];
+        if (isArray(_values_of_param_name)) {
+          _values_of_param_name.splice(0);
+          _to_be_setted_values_of_param_name.forEach((val: string | number): void => {
+            _values_of_param_name.push(val);
           })
         } else {
           console.error('state側の'+state_key+'がプリミティブなのに、セットしようと思っている値が配列', param_name)
         }
       } else {
-        state[state_key][param_name] = values[param_name];
+        state[state_key][param_name] = _to_be_setted_values_of_param_name;
       }
     }
   },

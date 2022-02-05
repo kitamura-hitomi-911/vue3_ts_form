@@ -3,7 +3,7 @@
     <dl>
       <dt>{{form_parts.ttl_label}}</dt>
       <dd>
-        <component v-for="form_data in form_parts.form_data_list" :is="form_data.component" :form_data="form_data" :key="form_data.name" :values="values" :mode="mode" @updateVal="updateVal"></component>
+        <component v-for="form_data in form_parts.form_data_list" :is="mode === 'edit' ? form_data.component : 'FormView'" :form_data="form_data" :key="form_data.name" :values="values" :mode="mode" @updateVal="updateVal"></component>
         <p class="form_parts-error" v-if="error.length" v-html="error.join('<br>')"></p>
       </dd>
     </dl>
@@ -17,6 +17,7 @@ import FormCheckbox from "@/components/FormCheckbox.vue";
 import FormRadio from "@/components/FormRadio.vue";
 import FormTextarea from "@/components/FormTextarea.vue";
 import FormSelect from "@/components/FormSelect.vue";
+import FormView from "@/components/FormView.vue";
 import {FormParts, FormData, FormValue, FormValues, Errors} from "@/types";
 
 
@@ -27,7 +28,8 @@ export default defineComponent({
     FormCheckbox,
     FormRadio,
     FormSelect,
-    FormTextarea
+    FormTextarea,
+    FormView
   },
   props:{
     mode: {
@@ -71,9 +73,13 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-.form_parts{
-    dl{
-        display: flex;
-    }
+.form_parts {
+  dl {
+    display: flex;
+  }
+
+  .form_parts-error{
+    color:#f00;
+  }
 }
 </style>

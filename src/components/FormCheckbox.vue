@@ -42,7 +42,7 @@ export default defineComponent({
       store.commit('sheet/setValues',param_obj);
     }
 
-    return {value, setValues};
+    return {value};
   }
 });
 

@@ -6,8 +6,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed,  watch } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { defineComponent, computed,  watch, ref } from "vue";
+import { useRoute } from "vue-router";
 
 import { ActionToMode, Btn } from "@/types"
 import FormMain from "@/components/FormMain.vue";
@@ -18,7 +18,6 @@ export default defineComponent({
     FormMain,
   },
   setup() {
-    const router = useRouter();
     const route = useRoute();
 
     const actionToMode:ActionToMode = {
@@ -46,12 +45,6 @@ export default defineComponent({
     });
     const store_name = 'sheet';
 
-    watch(
-      () => route.params.action,
-      () => {
-        router.go(0);
-      }
-    );
     return { mode, store_name, btn_list };
   },
 });

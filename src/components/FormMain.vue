@@ -12,8 +12,9 @@
 import FormParts from '@/components/FormParts.vue';
 import Btn from '@/components/Btn.vue';
 import { useStore } from 'vuex'
-import {defineComponent, computed, PropType, ref} from "vue";
+import {defineComponent, computed, PropType} from "vue";
 import {FormValues, Btn as TypeBtn, FormMode} from "@/types";
+import {useRoute, useRouter} from "vue-router";
 
 export default defineComponent({
   name: 'FormMain',
@@ -38,10 +39,11 @@ export default defineComponent({
   setup(props){
     const store = useStore();
 
-    const form_parts_list = ref(store.state[props.store_name].form_parts_list);
+    const router = useRouter();
+    const route = useRoute();
 
-    // store.state に初期値セット
-    store.dispatch('sheet/initValues');
+    // form_parts_list
+    const form_parts_list = computed(() => store.state[props.store_name].form_parts_list);
 
     // computed の values
     const values = computed(() => store.state[props.store_name].tmp_values);
@@ -60,10 +62,17 @@ export default defineComponent({
         console.log('checkForm');
         // エラーチェック
         store.dispatch(props.store_name+'/checkErrors');
+        const has_error = store.getters[props.store_name+'/hasError'];
+        if(!has_error){
+          router.push({
+            name:typeof route.name === 'string' ? route.name : 'SheetCreate',
+            params:{
+              action:'confirm'
+            }
+          })
+        }
       }
     }
-
-
 
     return { form_parts_list, values, errors, updateVal, onBtnClick};
   }
